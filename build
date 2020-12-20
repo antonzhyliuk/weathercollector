@@ -1,0 +1,6 @@
+#/bin/shell
+
+cd weathercollector
+lein uberjar
+cd ..
+docker-compose build

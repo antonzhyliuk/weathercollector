@@ -1,6 +1,6 @@
 FROM openjdk:16-alpine
 
-RUN mkdir -p /app /app/resources
+RUN mkdir -p /app
 
 WORKDIR /app
 
