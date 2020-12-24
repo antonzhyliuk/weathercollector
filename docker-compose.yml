@@ -9,11 +9,12 @@ services:
     volumes:
       - /tmp/postgresdata:/var/lib/postgresql/data
     image: 'postgres:alpine'
+    ports:
+      - "5432:5432"
   weathercollector:
     restart: 'always'
     ports:
-      - '3000:3000'
-      - '5555:5555'
+      - '7888:7888'
     environment:
       - "OPEN_WEATHER_MAP_API_KEY=${OPEN_WEATHER_MAP_API_KEY}"
       - "DB_PASSWORD=${DB_PASSWORD}"

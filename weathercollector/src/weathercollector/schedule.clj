@@ -2,7 +2,6 @@
   (:require [clojurewerkz.quartzite.scheduler :as qs]
             [clojurewerkz.quartzite.triggers :as t]
             [clojurewerkz.quartzite.jobs :as j]
-            [clojurewerkz.quartzite.jobs :refer [defjob]]
             [clojurewerkz.quartzite.schedule.cron :refer [schedule cron-schedule]]))
 
 (j/defjob CollectCurrentWeather [ctx]
