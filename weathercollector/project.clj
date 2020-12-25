@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [clojurewerkz/quartzite "2.1.0"]
                  [clj-http "3.10.3"]
-                 [nrepl "0.8.3"]]
+                 [nrepl "0.8.3"]
+                 [cheshire "5.10.0"]]
   :repl-options {:init-ns weathercollector.core}
   :main weathercollector.core
   :aot [weathercollector.core])

@@ -14,9 +14,16 @@
 (def api-key (System/getenv "OPEN_WEATHER_MAP_API_KEY"))
 
 (def weather-url "http://api.openweathermap.org/data/2.5/weather")
+(def forecast-url "http://api.openweathermap.org/data/2.5/forecast")
 
 (defn fetch-weather [city]
-  (client/get weather-url {:accept :json
-                           :query-params {"q" city
-                                          "appid" api-key}}))
+  (let [response (client/get weather-url {:query-params {"q" city
+                                                         "appid" api-key}
+                                          :as :json})]
+    (:body response)))
 
+(defn fetch-forecast [city]
+  (let [response (client/get forecast-url {:query-params {"q" city
+                                                          "appid" api-key}
+                                           :as :json})]
+    (:body response)))
