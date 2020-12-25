@@ -2,13 +2,33 @@
   (:require [clojurewerkz.quartzite.scheduler :as qs]
             [clojurewerkz.quartzite.triggers :as t]
             [clojurewerkz.quartzite.jobs :as j]
-            [clojurewerkz.quartzite.schedule.cron :refer [schedule cron-schedule]]))
+            [clojurewerkz.quartzite.schedule.cron :refer [schedule cron-schedule]]
+            [weathercollector.db :as db]
+            [weathercollector.open-weather-map-api :as api]))
+
+(def cities
+  ["Athens, Greece"
+   "Paris, France"
+   "London, UK"
+   "Madrid, Spain"
+   "Moscow, Russia"
+   "Rome, Italy"])
+
+(def minsk "Minsk, Belarus")
 
 (j/defjob CollectCurrentWeather [ctx]
-  (println "Collect weather"))
+  (println "Perform collection of weather")
+  (map (fn [city]
+         (let [body (:body (api/fetch-weather city))]
+           (db/insert-weather! city body)))
+       cities))
 
 (j/defjob CollectWeatherForecasts [ctx]
-  (println "Collect forecasts"))
+  (println "Perform collection of forecasts")
+  (map (fn [city]
+         (let [body (:body (api/fetch-forecast city))]
+           (db/insert-forecast! city body)))
+       cities))
 
 (defn start []
   (let [s (-> (qs/initialize) qs/start)

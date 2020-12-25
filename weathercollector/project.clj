@@ -7,7 +7,9 @@
                  [clojurewerkz/quartzite "2.1.0"]
                  [clj-http "3.10.3"]
                  [nrepl "0.8.3"]
-                 [cheshire "5.10.0"]]
+                 [metosin/jsonista "0.2.7"]
+                 [seancorfield/next.jdbc "1.1.613"]
+                 [org.postgresql/postgresql "42.2.10"]]
   :repl-options {:init-ns weathercollector.core}
   :main weathercollector.core
   :aot [weathercollector.core])
