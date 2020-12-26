@@ -5,10 +5,10 @@
          body JSONB NOT NULL
        );
        CREATE TABLE forecasts (
-       id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-       city VARCHAR(128) NOT NULL,
-       received_at TIMESTAMP NOT NULL,
-       body JSONB NOT NULL
+         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+         city VARCHAR(128) NOT NULL,
+         received_at TIMESTAMP NOT NULL,
+         body JSONB NOT NULL
        );"]
  :down ["DROP TABLE hourly_weather;
          DROP TABLE forecasts;"]}

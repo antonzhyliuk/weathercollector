@@ -1,0 +1,13 @@
+{:up ["CREATE MATERIALIZED VIEW average_daily_temperature AS
+       SELECT city,
+              day,
+              avg(temperature) AS avg_temperature
+       FROM
+         (SELECT city,
+                 received_at::date AS day,
+                 (body -> 'main' -> 'temp') :: float AS temperature
+          FROM hourly_weather) AS w
+          GROUP BY city,
+                   day;
+       CREATE UNIQUE INDEX ON average_daily_temperature (city, day);"]
+ :down ["DROP MATERIALIZED VIEW average_daily_temperature;"]}

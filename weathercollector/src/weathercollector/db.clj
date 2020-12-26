@@ -41,3 +41,9 @@
                   city
                   (now)
                   body]))
+
+(defn refresh-views! []
+  (jdbc/execute!
+     ds
+     ["REFRESH MATERIALIZED VIEW CONCURRENTLY average_daily_temperature;
+       REFRESH MATERIALIZED VIEW CONCURRENTLY latest_weather;"]))

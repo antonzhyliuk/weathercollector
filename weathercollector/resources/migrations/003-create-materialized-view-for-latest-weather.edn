@@ -1,0 +1,13 @@
+{:up ["CREATE MATERIALIZED VIEW latest_weather AS
+       SELECT w.city,
+              w.received_at,
+              w.body
+       FROM
+         (SELECT city,
+                 max(received_at) AS max_received_at
+          FROM hourly_weather
+          GROUP BY city) AS x
+       INNER JOIN hourly_weather AS w ON w.city = x.city
+       AND w.received_at = x.max_received_at;
+       CREATE UNIQUE INDEX ON latest_weather (city);"]
+ :down ["DROP MATERIALIZED VIEW latest_weather;"]}

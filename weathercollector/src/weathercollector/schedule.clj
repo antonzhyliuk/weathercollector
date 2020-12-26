@@ -22,7 +22,8 @@
     (map (fn [city]
            (let [body (:body (api/fetch-weather city))]
              (db/insert-weather! city body)))
-         cities)))
+         cities)
+    (db/refresh-views!)))
 
 (j/defjob CollectWeatherForecasts [ctx]
   (do
@@ -30,7 +31,8 @@
     (map (fn [city]
            (let [body (:body (api/fetch-forecast city))]
              (db/insert-forecast! city body)))
-         cities)))
+         cities)
+    (db/refresh-views!)))
 
 (defn start []
   (let [s (-> (qs/initialize) qs/start)

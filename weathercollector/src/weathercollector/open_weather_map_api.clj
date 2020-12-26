@@ -8,8 +8,10 @@
 
 (defn fetch-weather [city]
   (client/get weather-url {:query-params {"q" city
-                                          "appid" api-key}}))
+                                          "appid" api-key
+                                          "units" "metric"}}))
 
 (defn fetch-forecast [city]
   (client/get forecast-url {:query-params {"q" city
-                                           "appid" api-key}}))
+                                           "appid" api-key
+                                           "units" "metric"}}))
