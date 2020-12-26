@@ -17,18 +17,20 @@
 (def minsk "Minsk, Belarus")
 
 (j/defjob CollectCurrentWeather [ctx]
-  (println "Perform collection of weather")
-  (map (fn [city]
-         (let [body (:body (api/fetch-weather city))]
-           (db/insert-weather! city body)))
-       cities))
+  (do
+    (println "Perform collection of weather")
+    (map (fn [city]
+           (let [body (:body (api/fetch-weather city))]
+             (db/insert-weather! city body)))
+         cities)))
 
 (j/defjob CollectWeatherForecasts [ctx]
-  (println "Perform collection of forecasts")
-  (map (fn [city]
-         (let [body (:body (api/fetch-forecast city))]
-           (db/insert-forecast! city body)))
-       cities))
+  (do
+    (println "Perform collection of forecasts")
+    (map (fn [city]
+           (let [body (:body (api/fetch-forecast city))]
+             (db/insert-forecast! city body)))
+         cities)))
 
 (defn start []
   (let [s (-> (qs/initialize) qs/start)
