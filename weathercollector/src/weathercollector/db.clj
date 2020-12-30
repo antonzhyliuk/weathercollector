@@ -46,4 +46,5 @@
   (jdbc/execute!
      ds
      ["REFRESH MATERIALIZED VIEW CONCURRENTLY average_daily_temperature;
-       REFRESH MATERIALIZED VIEW CONCURRENTLY latest_weather;"]))
+       REFRESH MATERIALIZED VIEW CONCURRENTLY latest_weather;
+       REFRESH MATERIALIZED VIEW CONCURRENTLY daily_temperature;"]))

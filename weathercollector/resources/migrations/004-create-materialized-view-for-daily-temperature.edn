@@ -1,0 +1,37 @@
+{:up ["CREATE MATERIALIZED VIEW daily_temperature AS
+       SELECT w.city,
+              w.day,
+              w.min_temp,
+              w.max_temp,
+              jsonb_agg(
+                jsonb_build_object('min_temp', f.min_temp,
+                                   'max_temp', f.max_temp,
+                                   'received_date', f.received_date)
+              ) AS predictions
+       FROM (
+         SELECT city,
+                (received_at :: date) as day,
+                min((body -> 'main' -> 'temp') :: float) as min_temp,
+                max((body -> 'main' -> 'temp') :: float) as max_temp
+         FROM hourly_weather
+         WHERE (received_at :: date) != current_date
+         GROUP BY city, received_at :: date
+       ) w
+       LEFT JOIN (
+         SELECT city,
+                min((data -> 'main' -> 'temp') :: float) as min_temp,
+                max((data -> 'main' -> 'temp') :: float) as max_temp,
+                received_date,
+                (data -> 'dt_txt')::text::date as forecast_date
+         FROM (
+           SELECT city,
+                jsonb_array_elements(body -> 'list') as data,
+                received_at :: date as received_date
+           FROM forecasts
+         ) raw_predictions
+         GROUP BY city, forecast_date, received_date
+       ) f
+       ON w.city = f.city and w.day = f.forecast_date
+       GROUP BY w.city, w.day, w.min_temp, w.max_temp;
+       CREATE UNIQUE INDEX ON daily_temperature (city, day);"]
+ :down ["DROP MATERIALIZED VIEW daily_temperature;"]}
