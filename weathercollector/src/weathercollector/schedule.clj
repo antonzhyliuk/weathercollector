@@ -1,10 +1,11 @@
 (ns weathercollector.schedule
   (:require [clojurewerkz.quartzite.scheduler :as qs]
             [clojurewerkz.quartzite.triggers :as t]
-            [clojurewerkz.quartzite.jobs :as j]
+            [clojurewerkz.quartzite.jobs :as j :refer [defjob]]
             [clojurewerkz.quartzite.schedule.cron :refer [schedule cron-schedule]]
             [weathercollector.db :as db]
-            [weathercollector.open-weather-map-api :as api]))
+            [weathercollector.open-weather-map-api :as api]
+            [taoensso.timbre :refer [info]]))
 
 (def cities
   ["Athens, Greece"
@@ -31,15 +32,15 @@
   (pull-forecasts!)
   (db/refresh-views!))
 
-(j/defjob CollectCurrentWeather [ctx]
+(defjob CollectCurrentWeather [ctx]
   (do
-    (println "Perform collection of weather")
+    (info "Perform collection of weather")
     (pull-weather!)
     (db/refresh-views!)))
 
-(j/defjob CollectWeatherForecasts [ctx]
+(defjob CollectWeatherForecasts [ctx]
   (do
-    (println "Perform collection of forecasts")
+    (info "Perform collection of forecasts")
     (pull-forecasts!)
     (db/refresh-views!)))
 

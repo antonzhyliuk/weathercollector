@@ -3,7 +3,7 @@
             [amazonica.aws.s3 :as s3]
             [jsonista.core :as j]))
 
-(def bucket-name "kleene.ai.exports")
+(def bucket-name "weathercollector.xyz.exports")
 
 (def transformations
   [{:key "daily_temperature.csv"

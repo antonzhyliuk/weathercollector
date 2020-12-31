@@ -11,7 +11,9 @@
                  [seancorfield/next.jdbc "1.1.613"]
                  [org.postgresql/postgresql "42.2.10"]
                  [ragtime "0.8.0"]
-                 [amazonica "0.3.153"]]
+                 [amazonica "0.3.153"]
+                 [com.taoensso/timbre "5.1.0"]
+                 [com.fzakaria/slf4j-timbre "0.3.20"]]
   :repl-options {:init-ns weathercollector.core}
   :main weathercollector.core
   :aot [weathercollector.core])
