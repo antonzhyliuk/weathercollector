@@ -1,7 +1,8 @@
 (ns weathercollector.db
   (:require [next.jdbc :as jdbc]
             [ragtime.jdbc]
-            [ragtime.repl :as repl]))
+            [ragtime.repl :as repl])
+  (:import (org.postgresql.copy PGCopyInputStream)))
 
 (def password (System/getenv "DB_PASSWORD"))
 
@@ -48,3 +49,9 @@
      ["REFRESH MATERIALIZED VIEW CONCURRENTLY average_daily_temperature;
        REFRESH MATERIALIZED VIEW CONCURRENTLY latest_weather;
        REFRESH MATERIALIZED VIEW CONCURRENTLY daily_temperature;"]))
+
+(defn copy-input-stream [source]
+  (PGCopyInputStream.
+   (jdbc/get-connection db-spec)
+   (str "COPY " source " TO STDOUT DELIMITER ',' CSV HEADER;")))
+

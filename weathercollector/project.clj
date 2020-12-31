@@ -10,7 +10,8 @@
                  [metosin/jsonista "0.2.7"]
                  [seancorfield/next.jdbc "1.1.613"]
                  [org.postgresql/postgresql "42.2.10"]
-                 [ragtime "0.8.0"]]
+                 [ragtime "0.8.0"]
+                 [amazonica "0.3.153"]]
   :repl-options {:init-ns weathercollector.core}
   :main weathercollector.core
   :aot [weathercollector.core])
