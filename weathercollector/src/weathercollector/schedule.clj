@@ -14,24 +14,33 @@
    "Moscow, Russia"
    "Rome, Italy"])
 
-(def minsk "Minsk, Belarus")
+(defn pull-weather! []
+  (map (fn [city]
+         (let [body (:body (api/fetch-weather city))]
+           (db/insert-weather! city body)))
+       cities))
+
+(defn pull-forecasts! []
+  (map (fn [city]
+         (let [body (:body (api/fetch-forecast city))]
+           (db/insert-forecast! city body)))
+       cities))
+
+(defn pull-data! []
+  (pull-weather!)
+  (pull-forecasts!)
+  (db/refresh-views!))
 
 (j/defjob CollectCurrentWeather [ctx]
   (do
     (println "Perform collection of weather")
-    (map (fn [city]
-           (let [body (:body (api/fetch-weather city))]
-             (db/insert-weather! city body)))
-         cities)
+    (pull-weather!)
     (db/refresh-views!)))
 
 (j/defjob CollectWeatherForecasts [ctx]
   (do
     (println "Perform collection of forecasts")
-    (map (fn [city]
-           (let [body (:body (api/fetch-forecast city))]
-             (db/insert-forecast! city body)))
-         cities)
+    (pull-forecasts!)
     (db/refresh-views!)))
 
 (defn start []
